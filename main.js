@@ -3,9 +3,32 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
+const hideError = document.getElementById("modal");
+hideError.hidden = true
+const heartButton = document.querySelector(".like-glyph")
 
 
+heartButton.addEventListener('click',() => {
+  mimicServerCall()
+  .then(like => clickHeart(like))
+  .catch(error => {
+    if (error){
+      hideError.hidden = false
+    }setTimeout(() => {hideError.hidden = true}, 3000)
+  })
+})
 
+function clickHeart(datas){
+  datas.forEach(data =>{
+    if(data === 'Pretend remote server notified of action!'){
+      heartButton.innerHTML = FULL_HEART;
+      heartButton.classList = "activated-heart"
+    }else{
+      heartButton.innerHTML = EMPTY_HEART;
+      heartButton.classList.remove();
+    }
+  }) 
+}
 
 //------------------------------------------------------------------------------
 // Don't change the code below: this function mocks the server response

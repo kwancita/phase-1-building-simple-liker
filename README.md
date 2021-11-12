@@ -49,7 +49,7 @@ Here's the specification:
     * Respond to the error using a `.catch(() => {})` block after your
       `.then(() => {})` block.
     * Display the error modal by removing the `.hidden` class
-    * Display the server error message in the modal
+    ddd* Display the server error message in the modal
     * Use `setTimeout` to hide the modal after 3 seconds (add the `.hidden` class)
   * When the "server" returns a success status:
     * Change the heart to a full heart
