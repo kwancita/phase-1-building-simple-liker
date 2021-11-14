@@ -2,33 +2,37 @@
 const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
-// Your JavaScript code goes here!
-const hideError = document.getElementById("modal");
-hideError.hidden = true
-const heartButton = document.querySelectorAll(".like-glyph")
-console.log(heartButton)
-for (let i = 0; i < heartButton.length; i++){
-  heartButton[i].addEventListener('click',() => {
-  console.log(heartButton[i])
-    mimicServerCall()
-    
-    .then(clickHeart())
-    .catch(error => {
-      if (error){
-        hideError.hidden = false
-      }setTimeout(() => {hideError.hidden = true}, 3000)
-    })
-  })
-}
+const allHeartButton = document.querySelectorAll(".like-glyph")
+const modal = document.getElementById("modal");
+const modalP = document.getElementById("modal-message");
 
-function clickHeart(){
-    if( "Pretend remote server notified of action!"){
-      heartButton.innerHTML = FULL_HEART;
-      heartButton.classList = "activated-heart"
-    }else{
-      heartButton.innerHTML = EMPTY_HEART;
-      heartButton.classList.remove();
-    } 
+modal.className = "hidden";
+
+let callServerandCatch = (event) =>{
+  mimicServerCall()
+  .then(() => handleClick(event))
+  .catch(error => handleError(error))
+}
+let handleError =(errorMsg) => {
+  modal.classList.remove('hidden')
+  modalP.textContent = errorMsg
+  setTimeout(() => {
+    modal.classList.add('hidden')
+    modalP.textContent = ''
+  }, 3000)
+}
+let handleClick = (event) => {
+  if( event.target.textContent === EMPTY_HEART){
+      event.target.classList.add("activated-heart")
+      event.target.textContent = FULL_HEART;
+  }else{
+      event.target.classList.remove('activated-heart');
+      event.target.textContent = EMPTY_HEART;   
+  } 
+}
+  
+for (let i = 0; i < allHeartButton.length; i++){
+  allHeartButton[i].addEventListener('click',callServerandCatch)
 }
 
 
@@ -39,6 +43,7 @@ function clickHeart(){
 //------------------------------------------------------------------------------
 
 function mimicServerCall(url="http://mimicServer.example.com", config={}) {
+  console.log("clicked")
   return new Promise(function(resolve, reject) {
     setTimeout(function() {
       let isRandomFailure = Math.random() < .2
@@ -50,3 +55,11 @@ function mimicServerCall(url="http://mimicServer.example.com", config={}) {
     }, 300);
   });
 }
+
+
+
+
+
+
+
+
